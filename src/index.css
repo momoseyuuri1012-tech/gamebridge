@@ -1,0 +1,456 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+
+  background: #f5f6f8;
+
+  font-family:
+    Arial,
+    sans-serif;
+
+  color: #1f2937;
+}
+
+button {
+  font: inherit;
+}
+
+.app {
+  width: 100%;
+  max-width: 600px;
+
+  min-height: 100vh;
+
+  margin: 0 auto;
+
+  padding-bottom: 100px;
+
+  background: white;
+}
+
+/* Header */
+
+.app-header {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  padding: 20px;
+
+  border-bottom:
+    1px solid #e5e7eb;
+}
+
+.app-header h1 {
+  margin: 0;
+
+  font-size: 24px;
+}
+
+.app-header p {
+  margin: 4px 0 0;
+
+  color: #6b7280;
+
+  font-size: 14px;
+}
+
+.profile-button {
+  width: 44px;
+  height: 44px;
+
+  border: 0;
+
+  border-radius: 50%;
+
+  cursor: pointer;
+}
+
+/* Home */
+
+.home {
+  padding: 16px;
+}
+
+.filters {
+  display: flex;
+
+  gap: 8px;
+
+  padding-bottom: 16px;
+
+  overflow-x: auto;
+}
+
+.filter-chip {
+  flex-shrink: 0;
+
+  padding: 8px 14px;
+
+  border:
+    1px solid #d1d5db;
+
+  border-radius: 999px;
+
+  background: white;
+
+  cursor: pointer;
+}
+
+.filter-chip.active {
+  background: #111827;
+
+  color: white;
+}
+
+.section-header {
+  display: flex;
+
+  align-items: center;
+
+  justify-content:
+    space-between;
+}
+
+.section-header span {
+  color: #6b7280;
+
+  font-size: 14px;
+}
+
+.party-list {
+  display: grid;
+
+  gap: 16px;
+}
+
+/* Party Card */
+
+.party-card {
+  padding: 18px;
+
+  border:
+    1px solid #e5e7eb;
+
+  border-radius: 16px;
+
+  cursor: pointer;
+}
+
+.party-card:hover {
+  border-color:
+    #9ca3af;
+}
+
+.party-card__header {
+  display: flex;
+
+  justify-content:
+    space-between;
+
+  gap: 16px;
+}
+
+.party-card h2 {
+  margin: 0;
+
+  font-size: 18px;
+}
+
+.party-card p {
+  margin: 8px 0;
+}
+
+.player-count {
+  font-weight: 700;
+}
+
+.tags {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 6px;
+
+  margin: 14px 0;
+}
+
+.tags span {
+  padding: 5px 9px;
+
+  border-radius: 999px;
+
+  background: #f3f4f6;
+
+  font-size: 12px;
+}
+
+.start-time {
+  font-weight: 600;
+}
+
+/* Create Party floating button */
+
+.create-party-button {
+  position: fixed;
+
+  right: 20px;
+
+  bottom: 24px;
+
+  padding: 14px 20px;
+
+  border: 0;
+
+  border-radius: 999px;
+
+  background: #111827;
+
+  color: white;
+
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+/* Party Detail */
+
+.party-detail {
+  padding: 20px;
+}
+
+.back-button {
+  margin-bottom: 24px;
+
+  padding: 8px 0;
+
+  border: 0;
+
+  background: transparent;
+
+  cursor: pointer;
+
+  font-weight: 600;
+}
+
+.party-detail__main,
+.host-card,
+.join-section {
+  margin-bottom: 20px;
+
+  padding: 20px;
+
+  border:
+    1px solid #e5e7eb;
+
+  border-radius: 16px;
+}
+
+.party-detail__title {
+  display: flex;
+
+  justify-content:
+    space-between;
+
+  gap: 16px;
+}
+
+.party-detail__title h1 {
+  margin: 6px 0 12px;
+}
+
+.party-type,
+.section-label {
+  color: #6b7280;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  text-transform:
+    uppercase;
+}
+
+.detail-list {
+  margin-top: 20px;
+}
+
+.host-card h2 {
+  margin-bottom: 4px;
+}
+
+.secondary-button {
+  width: 100%;
+
+  margin-top: 12px;
+
+  padding: 12px;
+
+  border:
+    1px solid #d1d5db;
+
+  border-radius: 10px;
+
+  background: white;
+
+  cursor: pointer;
+}
+
+.join-section textarea {
+  width: 100%;
+
+  min-height: 100px;
+
+  padding: 12px;
+
+  border:
+    1px solid #d1d5db;
+
+  border-radius: 10px;
+
+  resize: vertical;
+
+  font: inherit;
+}
+
+.join-button {
+  width: 100%;
+
+  margin-top: 12px;
+
+  padding: 14px;
+
+  border: 0;
+
+  border-radius: 10px;
+
+  background: #111827;
+
+  color: white;
+
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+/* Create Party Page */
+
+.create-party-page {
+  padding: 20px;
+}
+
+.party-form {
+  display: grid;
+
+  gap: 18px;
+
+  margin-top: 28px;
+}
+
+.party-form label {
+  display: grid;
+
+  gap: 8px;
+
+  font-weight: 600;
+}
+
+.party-form input,
+.party-form select,
+.party-form textarea {
+  width: 100%;
+
+  padding: 12px;
+
+  border:
+    1px solid #d1d5db;
+
+  border-radius: 10px;
+
+  background: white;
+
+  font: inherit;
+}
+
+.party-form textarea {
+  min-height: 120px;
+
+  resize: vertical;
+}
+
+/* Player Profile */
+
+.player-profile {
+  padding: 20px;
+}
+
+.profile-main {
+  text-align: center;
+
+  margin-bottom: 20px;
+
+  padding: 24px;
+
+  border:
+    1px solid #e5e7eb;
+
+  border-radius: 16px;
+}
+
+.profile-avatar {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  width: 80px;
+
+  height: 80px;
+
+  margin:
+    0 auto 16px;
+
+  border-radius: 50%;
+
+  background: #111827;
+
+  color: white;
+
+  font-size: 32px;
+
+  font-weight: 700;
+}
+
+.profile-bio {
+  color: #6b7280;
+
+  line-height: 1.6;
+}
+
+.profile-section {
+  margin-bottom: 20px;
+
+  padding: 20px;
+
+  border:
+    1px solid #e5e7eb;
+
+  border-radius: 16px;
+}
+.party-form .checkbox-label {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.party-form .checkbox-label input {
+  width: auto;
+}
