@@ -1,24 +1,32 @@
+import { useState } from "react";
 import {
   useNavigate,
   useParams,
 } from "react-router-dom";
 
 import type { Party } from "../types/party";
+import type { JoinRequest } from "../types/joinRequest";
 
 interface PartyDetailPageProps {
   parties: Party[];
+  joinRequests: JoinRequest[];
+  onCreateJoinRequest: (
+    request: JoinRequest,
+  ) => void;
 }
 
 export function PartyDetailPage({
   parties,
+  joinRequests,
+  onCreateJoinRequest,
 }: PartyDetailPageProps) {
   const navigate = useNavigate();
-
   const { partyId } = useParams();
 
+  const [message, setMessage] = useState("");
+
   const party = parties.find(
-    (item) =>
-      item.id === Number(partyId),
+    (item) => item.id === Number(partyId),
   );
 
   if (!party) {
@@ -27,6 +35,7 @@ export function PartyDetailPage({
         <h1>Party not found</h1>
 
         <button
+          type="button"
           onClick={() => navigate("/")}
         >
           Back to Home
@@ -35,10 +44,36 @@ export function PartyDetailPage({
     );
   }
 
+  const currentParty = party;
+
+  const existingRequest = joinRequests.find(
+    (request) =>
+      request.partyId === currentParty.id &&
+      request.applicantName === "You",
+  );
+
+  function handleJoinRequest() {
+    if (existingRequest) {
+      return;
+    }
+
+    const newRequest: JoinRequest = {
+      id: Date.now(),
+      partyId: currentParty.id,
+      applicantName: "You",
+      applicantCountry: "Japan",
+      message,
+      status: "PENDING",
+    };
+
+    onCreateJoinRequest(newRequest);
+  }
+
   return (
     <div className="app">
       <main className="party-detail">
         <button
+          type="button"
           className="back-button"
           onClick={() => navigate("/")}
         >
@@ -49,28 +84,30 @@ export function PartyDetailPage({
           <div className="party-detail__title">
             <div>
               <span className="party-type">
-                {party.longTerm
+                {currentParty.longTerm
                   ? "Long-term"
                   : "One-time"}
               </span>
 
-              <h1>{party.title}</h1>
+              <h1>{currentParty.title}</h1>
             </div>
 
             <strong>
-              {party.currentPlayers}/
-              {party.maxPlayers}
+              {currentParty.currentPlayers}/
+              {currentParty.maxPlayers}
             </strong>
           </div>
 
           <div className="tags">
-            <span>{party.edition}</span>
-
             <span>
-              {party.environment}
+              {currentParty.edition}
             </span>
 
-            {party.beginnerFriendly && (
+            <span>
+              {currentParty.environment}
+            </span>
+
+            {currentParty.beginnerFriendly && (
               <span>
                 Beginner Friendly
               </span>
@@ -80,24 +117,24 @@ export function PartyDetailPage({
           <div className="detail-list">
             <p>
               🎮{" "}
-              {party.activities.join(
+              {currentParty.activities.join(
                 " · ",
               )}
             </p>
 
             <p>
               🌐{" "}
-              {party.languages.join(
+              {currentParty.languages.join(
                 " / ",
               )}
             </p>
 
             <p>
-              🎙 {party.voiceChat}
+              🎙 {currentParty.voiceChat}
             </p>
 
             <p>
-              🕒 {party.startTime}
+              🕒 {currentParty.startTime}
             </p>
           </div>
         </section>
@@ -107,15 +144,18 @@ export function PartyDetailPage({
             HOST
           </p>
 
-          <h2>{party.hostName}</h2>
+          <h2>{currentParty.hostName}</h2>
 
-          <p>{party.hostCountry}</p>
+          <p>
+            {currentParty.hostCountry}
+          </p>
 
           <button
+            type="button"
             className="secondary-button"
             onClick={() =>
               navigate(
-                `/players/${party.hostName}`,
+                `/players/${currentParty.hostName}`,
               )
             }
           >
@@ -129,10 +169,22 @@ export function PartyDetailPage({
           <textarea
             placeholder="Write a short message to the host..."
             maxLength={200}
+            value={message}
+            disabled={Boolean(existingRequest)}
+            onChange={(event) =>
+              setMessage(event.target.value)
+            }
           />
 
-          <button className="join-button">
-            Send Join Request
+          <button
+            type="button"
+            className="join-button"
+            disabled={Boolean(existingRequest)}
+            onClick={handleJoinRequest}
+          >
+            {existingRequest
+              ? "Request Pending"
+              : "Send Join Request"}
           </button>
         </section>
       </main>

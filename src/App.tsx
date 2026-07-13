@@ -1,33 +1,51 @@
 import { useState } from "react";
-
-import {
-  Route,
-  Routes,
-} from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
 import { HomePage } from "./pages/HomePage";
-
 import { PartyDetailPage } from "./pages/PartyDetailPage";
-
 import { PlayerProfilePage } from "./pages/PlayerProfilePage";
-
 import { CreatePartyPage } from "./pages/CreatePartyPage";
+import { JoinRequestsPage } from "./pages/JoinRequestsPage";
 
 import { mockParties } from "./data/mockParties";
 
 import type { Party } from "./types/party";
+import type { JoinRequest } from "./types/joinRequest";
 
 function App() {
   const [parties, setParties] =
     useState<Party[]>(mockParties);
 
-  function handleCreateParty(
-    newParty: Party,
-  ) {
+  const [joinRequests, setJoinRequests] =
+    useState<JoinRequest[]>([]);
+
+  function handleCreateParty(newParty: Party) {
     setParties((current) => [
       ...current,
       newParty,
     ]);
+  }
+
+  function handleCreateJoinRequest(
+    newRequest: JoinRequest,
+  ) {
+    setJoinRequests((current) => [
+      ...current,
+      newRequest,
+    ]);
+  }
+
+  function handleUpdateJoinRequest(
+    requestId: number,
+    status: JoinRequest["status"],
+  ) {
+    setJoinRequests((current) =>
+      current.map((request) =>
+        request.id === requestId
+          ? { ...request, status }
+          : request,
+      ),
+    );
   }
 
   return (
@@ -35,9 +53,7 @@ function App() {
       <Route
         path="/"
         element={
-          <HomePage
-            parties={parties}
-          />
+          <HomePage parties={parties} />
         }
       />
 
@@ -46,6 +62,10 @@ function App() {
         element={
           <PartyDetailPage
             parties={parties}
+            joinRequests={joinRequests}
+            onCreateJoinRequest={
+              handleCreateJoinRequest
+            }
           />
         }
       />
@@ -63,6 +83,19 @@ function App() {
           <CreatePartyPage
             onCreateParty={
               handleCreateParty
+            }
+          />
+        }
+      />
+
+      <Route
+        path="/join-requests"
+        element={
+          <JoinRequestsPage
+            joinRequests={joinRequests}
+            parties={parties}
+            onUpdateRequest={
+              handleUpdateJoinRequest
             }
           />
         }

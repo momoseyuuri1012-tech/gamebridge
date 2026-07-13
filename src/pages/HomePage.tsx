@@ -16,14 +16,41 @@ export function HomePage({
 }: HomePageProps) {
   const navigate = useNavigate();
 
-  const [javaOnly, setJavaOnly] =
+  const [javaOnly, setJavaOnly] = useState(false);
+  const [vcOnly, setVcOnly] = useState(false);
+  const [beginnerOnly, setBeginnerOnly] =
+    useState(false);
+  const [longTermOnly, setLongTermOnly] =
     useState(false);
 
-  const visibleParties = javaOnly
-    ? parties.filter(
-        (party) => party.edition === "Java",
-      )
-    : parties;
+  const visibleParties = parties.filter((party) => {
+    if (javaOnly && party.edition !== "Java") {
+      return false;
+    }
+
+    if (
+      vcOnly &&
+      party.voiceChat === "No VC"
+    ) {
+      return false;
+    }
+
+    if (
+      beginnerOnly &&
+      !party.beginnerFriendly
+    ) {
+      return false;
+    }
+
+    if (
+      longTermOnly &&
+      !party.longTerm
+    ) {
+      return false;
+    }
+
+    return true;
+  });
 
   function handlePartyClick(
     partyId: number,
@@ -47,15 +74,46 @@ export function HomePage({
             }
           />
 
-          <FilterChip label="Bedrock" />
-          <FilterChip label="VC" />
+          <FilterChip
+            label="VC"
+            active={vcOnly}
+            onClick={() =>
+              setVcOnly(
+                (current) => !current,
+              )
+            }
+          />
 
           <FilterChip
             label="Beginner Friendly"
+            active={beginnerOnly}
+            onClick={() =>
+              setBeginnerOnly(
+                (current) => !current,
+              )
+            }
           />
 
-          <FilterChip label="Long-term" />
+          <FilterChip
+            label="Long-term"
+            active={longTermOnly}
+            onClick={() =>
+              setLongTermOnly(
+                (current) => !current,
+              )
+            }
+          />
         </section>
+
+        <button
+          type="button"
+          className="secondary-button"
+          onClick={() =>
+            navigate("/join-requests")
+          }
+        >
+          Join Requests
+        </button>
 
         <section className="party-list">
           <div className="section-header">
@@ -66,13 +124,21 @@ export function HomePage({
             </span>
           </div>
 
-          {visibleParties.map((party) => (
-            <PartyCard
-              key={party.id}
-              party={party}
-              onClick={handlePartyClick}
-            />
-          ))}
+          {visibleParties.length === 0 ? (
+            <p className="empty-message">
+              No parties match your filters.
+            </p>
+          ) : (
+            visibleParties.map((party) => (
+              <PartyCard
+                key={party.id}
+                party={party}
+                onClick={
+                  handlePartyClick
+                }
+              />
+            ))
+          )}
         </section>
       </main>
 
