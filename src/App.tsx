@@ -36,17 +36,41 @@ function App() {
   }
 
   function handleUpdateJoinRequest(
-    requestId: number,
-    status: JoinRequest["status"],
-  ) {
-    setJoinRequests((current) =>
-      current.map((request) =>
-        request.id === requestId
-          ? { ...request, status }
-          : request,
+  requestId: number,
+  status: JoinRequest["status"],
+) {
+  const targetRequest = joinRequests.find(
+    (request) => request.id === requestId,
+  );
+
+  if (!targetRequest) {
+    return;
+  }
+
+  setJoinRequests((current) =>
+    current.map((request) =>
+      request.id === requestId
+        ? { ...request, status }
+        : request,
+    ),
+  );
+
+  if (status === "ACCEPTED") {
+    setParties((current) =>
+      current.map((party) =>
+        party.id === targetRequest.partyId
+          ? {
+              ...party,
+              currentPlayers: Math.min(
+                party.currentPlayers + 1,
+                party.maxPlayers,
+              ),
+            }
+          : party,
       ),
     );
   }
+}
 
   return (
     <Routes>
